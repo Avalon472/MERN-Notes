@@ -9,8 +9,6 @@ dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 5001
 
-connectDB();
-
 //Middleware to allow parsing of jsons
 app.use(express.json())
 
@@ -19,6 +17,9 @@ app.use(rateLimiter)
 
 app.use("/api/notes", noteRoutes)
 
-app.listen(PORT, () => {
-    console.log("Server started on port:", PORT)
+//Ensure that DB connects before app starts running
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log("Server started on port:", PORT)
+    })
 })
