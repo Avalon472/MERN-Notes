@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 
-const noteScheme = new mongoose.Schema({
+const noteSchema = new mongoose.Schema({
     title: {
         type:String,
         required:true
