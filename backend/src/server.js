@@ -1,7 +1,9 @@
 import express from "express"
+import dotenv from "dotenv"
+import cors from "cors"
+
 import noteRoutes from "./routes/noteRoutes.js"
 import {connectDB} from "./config/db.js"
-import dotenv from "dotenv"
 import rateLimiter from "./middleware/rateLimiter.js"
 
 dotenv.config()
@@ -12,10 +14,16 @@ const PORT = process.env.PORT || 5001
 //Middleware to allow parsing of jsons
 app.use(express.json())
 
+//Middleware to allow for cross domain request (i.e. frontend to backend)
+app.use(cors({
+    origin: "http://localhost:5173"
+}))
+
 //Middleware to enable a rate limit
 app.use(rateLimiter)
 
 app.use("/api/notes", noteRoutes)
+
 
 //Ensure that DB connects before app starts running
 connectDB().then(() => {
